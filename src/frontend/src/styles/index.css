@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-paper text-ink font-sans text-sm;
+    font-feature-settings: "ss02";
+  }
+  :focus-visible {
+    outline: 2px solid #1f4d3a;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .grid > * {
+    min-width: 0;
+  }
+  ::selection {
+    background: #c9e86a;
+    color: #16181d;
+  }
+  h1, h2, h3 {
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .num {
+    @apply font-mono tabular-nums;
+    font-feature-settings: "zero" 0;
+  }
+  .eyebrow {
+    @apply font-mono text-2xs uppercase tracking-[0.12em] text-ink-3;
+  }
+  .panel {
+    @apply rounded border border-line bg-surface;
+  }
+  .input {
+    @apply w-full rounded border border-line-strong bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-3
+      focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 disabled:bg-sunken disabled:text-ink-3;
+  }
+  .input[aria-invalid="true"] {
+    @apply border-critical focus:ring-critical/20;
+  }
+  .table-base {
+    @apply w-full border-separate border-spacing-0 text-left text-sm;
+  }
+  .table-base th {
+    @apply sticky top-0 z-[1] border-b border-line bg-surface px-3 py-2 font-mono text-2xs font-medium uppercase tracking-[0.08em] text-ink-3;
+  }
+  .table-base td {
+    @apply border-b border-line/70 px-3 py-2.5 align-middle;
+  }
+  .table-base tbody tr:hover td {
+    @apply bg-paper/60;
+  }
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #cfcac0 transparent;
+  }
+}
+
+.leaflet-container {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  background: #eeebe4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

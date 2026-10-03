@@ -1,0 +1,94 @@
+# =============================================================================
+# HACKATHON SUBMISSION METADATA
+# =============================================================================
+# Instructions:
+#   - Fill in ALL required fields (marked with # REQUIRED)
+#   - Optional fields can be left as empty strings ""
+#   - Do NOT rename this file — the evaluation pipeline reads it by name
+#   - Use double quotes around all string values
+# =============================================================================
+
+team:
+  name: ""                             # REQUIRED — e.g., "Orion Squad"
+  track: "Sustainability"              # REQUIRED — one of: AI | DevOps | Sustainability | Open
+  lead:
+    name: ""                           # REQUIRED — e.g., "Alice Chen"
+    email: ""                          # REQUIRED — e.g., "alice.chen@ibm.com"
+  members:
+    - name: ""                         # REQUIRED — Team member 1
+      email: ""
+    - name: ""                         # Add more members by copying the two lines above
+      email: ""
+    - name: ""
+      email: ""
+
+submission:
+  title: "ChargeOpt: EV Fleet Charging Optimisation Engine"   # REQUIRED
+
+  problem_statement: >                 # REQUIRED — 1-3 sentences. What problem? Who has it?
+    Problem A3, EV Charging Optimisation Engine. EV fleet operators run static
+    charging schedules that ignore tariff windows, upcoming trips and charger
+    capacity, so some vehicles leave the depot under-charged while most of the
+    energy is bought at peak rates. For a 100-vehicle fleet, the problem statement
+    puts the cost of this at USD 150,000 to 300,000 a year, along with 15 to 20%
+    shorter battery life.
+
+  solution_summary: >                  # REQUIRED — 1-3 sentences. What did you build?
+    ChargeOpt is a full-stack fleet charging platform built around a deterministic
+    scheduling engine. It works out how much energy each vehicle needs for its next
+    trip, ranks vehicles by urgency, reserves conflict-free charger slots and moves
+    flexible charging into the cheapest window that still finishes before departure.
+    Every decision comes with a plain-English reason. On the seeded 100-vehicle
+    scenario, the modelled plan costs 58.5% less than a static baseline, cuts the
+    peak-tariff share of energy from 82% to 22% and raises projected departure
+    readiness from 87.9% to 93.9%.
+
+  key_features:                        # REQUIRED — List 3 to 5 specific features you implemented
+    - "Deterministic scheduling engine (rules R1-R8, priorities P1-P5) that never trades departure readiness for a cheaper tariff and explains each decision in plain English"
+    - "Conflict-free charger reservations, enforced in the engine and again by a PostgreSQL exclusion constraint, with depot load limits and charger availability windows"
+    - "Event-driven recalculation on arrivals, departures, SoC changes, charger faults, missed slots, trip edits and manual overrides, with an optional approval workflow"
+    - "Side-by-side comparison of the static baseline and the rule-based plan on the same fleet snapshot, checked against a HiGHS linear-programming lower bound (3.2% gap on the demo fleet)"
+    - "Live operations console: OCPP 1.6-J charger control, WebSocket updates, alerts, a fleet map, 13 CSV reports, an audit log and six role-based views, including a driver view"
+
+  tech_stack:
+    languages: ["Python", "TypeScript", "SQL"]                 # REQUIRED
+    frameworks: ["FastAPI", "SQLAlchemy 2", "Alembic", "Pydantic 2", "React 18", "Vite", "Tailwind CSS", "TanStack Query", "Recharts", "React-Leaflet"]
+    ibm_technologies: ["IBM Bob"]
+    databases: ["PostgreSQL 16"]
+    other: ["Docker", "Docker Compose", "nginx", "SciPy / HiGHS (LP benchmark)", "OCPP 1.6-J", "WebSockets", "Playwright", "pytest", "Vitest", "OpenStreetMap", "IBM Plex typeface"]
+
+  what_we_are_most_proud_of: >         # Optional but recommended — guides judges to your best work
+    The scheduling engine in src/backend/app/services/scheduler/engine.py. It is a
+    pure function from a fleet snapshot to a plan, so the same input always gives
+    the same output, and every reservation carries the rules that produced it
+    ("R4: shifted to off-peak window, est. 1246.45 INR vs 2537.42 INR if charged
+    immediately"). We didn't want to just claim that it is good, so we added a
+    linear-programming benchmark (optimizer.py) that computes a lower bound on the
+    cost of any feasible schedule. On the demo fleet the rule-based plan comes
+    within 3.2% of that bound. The engine is covered by 15 unit tests, including
+    the three worked examples from our PRD (EV-027, EV-061, EV-042).
+
+  known_limitations: >                 # Optional but recommended — be honest about gaps
+    All cost, energy and readiness figures come from simulated telemetry and a
+    configured tariff table, not from a real fleet. There is no forecasting:
+    trip energy comes from the trip schedule an operator enters or imports, rather
+    than from a learned route-demand model. Battery health is handled indirectly,
+    by charging only to what the next trip needs instead of to the maximum. We do
+    not model degradation, so we make no claim about battery life. OCPP support
+    has been tested against our bundled emulator, not against physical chargers.
+    The map needs internet access for OpenStreetMap tiles. WebSocket fan-out is
+    per backend instance, so scaling out needs sticky sessions. The app is not
+    deployed publicly and runs locally with Docker Compose.
+
+# =============================================================================
+# ARTIFACT LOCATIONS
+# These paths are relative to the repo root. Only change if you moved files.
+# =============================================================================
+artifacts:
+  source_code: "src/"
+  setup_guide: "docs/setup-guide.md"
+  architecture_doc: "docs/architecture.md"
+  demo_video: "demo/demo-video-link.txt"   # URL to hosted video (YouTube, Loom, Box)
+  live_demo: "demo/live-demo-url.txt"      # URL to deployed demo (optional)
+  screenshots: "demo/screenshots/"
+  presentation: "presentation/"

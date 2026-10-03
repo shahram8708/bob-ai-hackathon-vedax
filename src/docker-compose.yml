@@ -1,0 +1,89 @@
+name: chargeopt
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-chargeopt}
+      POSTGRES_USER: ${POSTGRES_USER:-chargeopt}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build:
+      context: ./backend
+      target: runtime
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-chargeopt}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-chargeopt}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-480}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      FLEET_TIMEZONE: ${FLEET_TIMEZONE:-Asia/Kolkata}
+      CURRENCY: ${CURRENCY:-INR}
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-true}
+      DEMO_USER_PASSWORD: ${DEMO_USER_PASSWORD:-}
+      INTEGRATION_API_KEY: ${INTEGRATION_API_KEY:-}
+      OCPP_BASIC_AUTH_PASSWORD: ${OCPP_BASIC_AUTH_PASSWORD:-}
+      SIMULATION_ENABLED: ${SIMULATION_ENABLED:-true}
+      SIMULATION_TICK_SECONDS: ${SIMULATION_TICK_SECONDS:-5}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  ocpp-charger:
+    profiles: ["ocpp"]
+    build:
+      context: ./backend
+      target: runtime
+    entrypoint: ["python", "-m", "app.tools.ocpp_charge_point"]
+    environment:
+      CENTRAL_SYSTEM_URL: ws://backend:8000/api/ocpp
+      CHARGE_POINT_ID: ${OCPP_CHARGE_POINT_ID:-APH-C04}
+      OCPP_BASIC_AUTH_PASSWORD: ${OCPP_BASIC_AUTH_PASSWORD:-}
+      DATABASE_URL: postgresql+psycopg://unused:unused@db:5432/unused
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  backend-tests:
+    profiles: ["test"]
+    build:
+      context: ./backend
+      target: test
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-chargeopt}:${POSTGRES_PASSWORD}@db:5432/chargeopt_test
+      ADMIN_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-chargeopt}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-chargeopt}
+      JWT_SECRET: test-secret-that-is-long-enough-for-hs256-signing
+      FLEET_TIMEZONE: Asia/Kolkata
+      CURRENCY: INR
+      SEED_DEMO_DATA: "false"
+      SIMULATION_ENABLED: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

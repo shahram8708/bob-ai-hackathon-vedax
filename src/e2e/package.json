@@ -1,0 +1,12 @@
+{
+  "name": "chargeopt-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node check.mjs",
+    "demo": "node demo.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.1"
+  }
+}

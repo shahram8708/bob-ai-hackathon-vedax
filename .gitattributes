@@ -1,0 +1,8 @@
+# Keep shell scripts and container config on LF line endings, so the backend
+# entrypoint still runs inside Linux containers when the repo is cloned on Windows.
+*.sh            text eol=lf
+Dockerfile      text eol=lf
+*.conf          text eol=lf
+*.yml           text eol=lf
+*.yaml          text eol=lf
+.env.example    text eol=lf
