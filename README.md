@@ -10,10 +10,10 @@ ChargeOpt makes sure every EV in a fleet has enough charge for its next trip, an
 
 | Field | Value |
 |---|---|
-| **Team Name** | [Your Team Name] |
+| **Team Name** | VedaX |
 | **Track** | Sustainability |
-| **Team Lead** | [Name] — [email@ibm.com] |
-| **Members** | [Name 1], [Name 2], [Name 3] |
+| **Team Lead** | Shah Ram — shahram6708@gmail.com |
+| **Members** | Nisarg, Jamila, Nisha, Shreya |
 
 ---
 
@@ -95,8 +95,8 @@ These come from simulated telemetry and the configured tariff table (₹5.60 off
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/[your-github-username]/bob-ai-hackathon-[your-team-name].git
-cd bob-ai-hackathon-[your-team-name]/src
+git clone https://github.com/shahram8708/bob-ai-hackathon-vedax.git
+cd bob-ai-hackathon-vedax/src
 
 # 2. Configure environment
 cp .env.example .env
@@ -121,7 +121,7 @@ The first start runs database migrations and seeds three Bengaluru depots, 22 ch
 | Artifact | Link |
 |---|---|
 | 📹 Demo Video | [See demo/demo-video-link.txt](demo/demo-video-link.txt) |
-| 🌐 Live Demo | [See demo/live-demo-url.txt](demo/live-demo-url.txt) (not deployed, runs locally) |
+| 🌐 Live Demo | [See demo/live-demo-url.txt](demo/live-demo-url.txt) |
 | 🖼️ Screenshots | [See demo/screenshots/](demo/screenshots/) |
 | 📊 Presentation | [See presentation/](presentation/) |
 

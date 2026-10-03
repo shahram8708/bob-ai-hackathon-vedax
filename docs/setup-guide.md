@@ -59,8 +59,8 @@ The values in `.env.example` are placeholders, but they are valid ones, so the a
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/[your-github-username]/bob-ai-hackathon-[your-team-name].git
-cd bob-ai-hackathon-[your-team-name]/src
+git clone https://github.com/[your-github-username]/bob-ai-hackathon-vedax.git
+cd bob-ai-hackathon-vedax/src
 
 # 2. Create your environment file (see the table above)
 cp .env.example .env

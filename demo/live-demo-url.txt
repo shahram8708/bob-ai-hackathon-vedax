@@ -1,4 +1,0 @@
-NOT DEPLOYED — run locally using docs/setup-guide.md
-
-ChargeOpt runs locally with Docker Compose (cd src && cp .env.example .env && docker compose up -d)
-and is then available at http://localhost:8080. The demo video shows the full walkthrough.
