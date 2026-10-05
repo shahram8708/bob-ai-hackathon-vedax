@@ -9,18 +9,22 @@
 # =============================================================================
 
 team:
-  name: ""                             # REQUIRED — e.g., "Orion Squad"
-  track: "Sustainability"              # REQUIRED — one of: AI | DevOps | Sustainability | Open
+  name: "VedaX"                             
+  track: "Sustainability"              
   lead:
-    name: ""                           # REQUIRED — e.g., "Alice Chen"
-    email: ""                          # REQUIRED — e.g., "alice.chen@ibm.com"
+    name: "Shah Ram"                           
+    email: "shahram8708@gmail.com"                          
   members:
-    - name: ""                         # REQUIRED — Team member 1
-      email: ""
-    - name: ""                         # Add more members by copying the two lines above
-      email: ""
-    - name: ""
-      email: ""
+    - name: "Nisarg"                         
+      email: "nisargmparmar1709@gmail.com"
+    - name: "Jamila"                         
+      email: "jamilarangwala66@gmail.com"
+    - name: "Shreya"
+      email: "manishamohkar05@gmail.com"
+    - name: "Rashi"
+      email: "rashiitripathi2008@gmail.com"
+    - name: "Nisha"
+      email: "nishaspatel05@gmail.com"
 
 submission:
   title: "ChargeOpt: EV Fleet Charging Optimisation Engine"   # REQUIRED
