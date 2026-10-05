@@ -9,29 +9,29 @@ Inside the backend, the scheduling engine is a pure module with no I/O. Everythi
 ```mermaid
 graph TD
     subgraph Clients
-        U[Fleet staff<br/>browser / phone]
-        CP[OCPP 1.6-J<br/>charge points]
-        ERP[Fleet / ERP system]
+        U["Fleet staff<br/>browser / phone"]
+        CP["OCPP 1.6-J<br/>charge points"]
+        ERP["Fleet / ERP system"]
     end
 
     subgraph "frontend container"
-        NG[nginx<br/>static SPA + reverse proxy]
+        NG["nginx<br/>static SPA + reverse proxy"]
     end
 
     subgraph "backend container (FastAPI)"
-        API[REST API<br/>routes + RBAC]
-        WS[WebSocket hub<br/>/api/ws]
-        OC[OCPP central system<br/>/api/ocpp/&#123;id&#125;]
-        SVC[Scheduler service<br/>snapshot · diff · persist]
-        ENG[Rule engine<br/>pure, deterministic]
-        LP[LP benchmark<br/>SciPy / HiGHS]
-        LOOP[Operations loop<br/>simulation · monitoring · recalculation]
-        MON[Alerts & monitoring]
-        CTL[Charger control]
+        API["REST API<br/>routes + RBAC"]
+        WS["WebSocket hub<br/>/api/ws"]
+        OC["OCPP central system<br/>/api/ocpp/:id"]
+        SVC["Scheduler service<br/>snapshot · diff · persist"]
+        ENG["Rule engine<br/>pure, deterministic"]
+        LP["LP benchmark<br/>SciPy / HiGHS"]
+        LOOP["Operations loop<br/>simulation · monitoring · recalculation"]
+        MON["Alerts & monitoring"]
+        CTL["Charger control"]
     end
 
-    DB[(PostgreSQL 16<br/>btree_gist exclusion)]
-    HOOK[Alert webhook<br/>optional]
+    DB[("PostgreSQL 16<br/>btree_gist exclusion")]
+    HOOK["Alert webhook<br/>optional"]
 
     U -->|HTTPS| NG
     NG -->|/api/*| API
@@ -45,7 +45,7 @@ graph TD
     SVC -->|snapshot| ENG
     ENG -->|plan + explanations| SVC
     API -->|comparison| LP
-    LP -.reuses feasibility.-> ENG
+    LP -. "reuses feasibility" .-> ENG
     SVC --> DB
     API --> DB
     LOOP --> MON
